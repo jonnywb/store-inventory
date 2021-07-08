@@ -62,6 +62,10 @@ def add_csv():
                     date = clean_date(row[3])
                     new_product = Product(product_name = name, product_price = price, product_quantity = quantity, date_updated = date)
                     session.add(new_product)
+                elif clean_date(row[3]) > product_in_db.date_updated:
+                    product_in_db.product_price = clean_price(row[1])
+                    product_in_db.product_quantity = int(row[2])
+                    product_in_db.date_updated = clean_date(row[3])
         session.commit()
 
 def backup_csv():
@@ -138,6 +142,10 @@ def find_id():
 
             id_error = False
 
+            input('''
+            \nPress enter when you are ready to continue
+            \r*******************************************''')
+
         except ValueError:
             input(''' 
             \n******* ID ERROR *******
@@ -161,9 +169,9 @@ def menu():
             \r- Type 'exit' to exit application.
             \r**************************************''')
         
-        choice = input('\nPlease make a selection.\n> ')
+        choice = input('\nPlease make a selection.\n> ').lower()
 
-        if choice.lower() in ['a', 'v', 'b', 'exit']:
+        if choice in ['a', 'v', 'b', 'exit']:
             return choice
         else:
             input('''
